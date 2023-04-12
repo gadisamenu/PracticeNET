@@ -34,7 +34,7 @@ namespace PracticeNET.Controllers
 
             if (team == null)
             {
-                return BadRequest("team not found");
+                return NotFound("team not found");
             }
             return Ok(team);
         }
@@ -54,7 +54,7 @@ namespace PracticeNET.Controllers
             var team = await _context.Teams.FirstOrDefaultAsync(t => t.Id == id);
             if (team == null)
             {
-                return BadRequest("team not found");
+                return NotFound("team not found");
             }
 
             team.Name = newteam.Name ?? team.Name;
@@ -70,7 +70,7 @@ namespace PracticeNET.Controllers
         {
             var team = await _context.Teams.FirstOrDefaultAsync(t => t.Id == id);
 
-            if (team == null) return BadRequest("team not found");
+            if (team == null) return NotFound("team not found");
          
             _context.Teams.Remove(team);
             await _context.SaveChangesAsync();
