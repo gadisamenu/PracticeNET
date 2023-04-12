@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PracticeNET.Data;
+using PracticeNET.DTO;
 using PracticeNET.Models;
+using System.Net;
 
 namespace PracticeNET.Controllers
 {
@@ -47,14 +49,18 @@ namespace PracticeNET.Controllers
 
 
         [HttpPatch("{id:int}")]
-        public async Task<IActionResult> Patch(int id, string country)
+        public async Task<IActionResult> Patch(int id, [FromBody] TeamDTO newteam)
         {
             var team = await _context.Teams.FirstOrDefaultAsync(t => t.Id == id);
             if (team == null)
             {
                 return BadRequest("team not found");
             }
-            team.Country = country;
+
+            team.Name = newteam.Name ?? team.Name;
+            team.Country = newteam.Country ?? team.Country;
+            team.TeamPrinciple = newteam.TeamPrinciple ?? team.TeamPrinciple;
+           
             await _context.SaveChangesAsync();
             return Ok(team); 
         }
